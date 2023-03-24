@@ -15,12 +15,15 @@
     <div class="container">
         <ul class="menu">
             <li>
-       {#         <a href="{% url 'index' %}">Home</a> #}
+                <a href="{% url 'index' %}">Главная</a>
             </li>
             {% block menu %}{% endblock %}
             {% if user.is_authenticated %}
             <li>
-                <a href="{% url 'profile' user.pk %}">Profile</a>
+                <a href="{% url 'post_create' %}">Добавить публикацию</a>
+            </li>
+            <li>
+                <a href="{% url 'profile' user.pk %}">Профиль</a>
             </li>
             <li>
                 <form action="{% url 'logout' %}" method="post">

@@ -25,3 +25,19 @@ class Comment(models.Model):
         blank=False,
         max_length=3000
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата и время создания"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Дата и время обновления"
+    )
+
+    class Meta:
+        ordering = ('-created_at',)
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return f"{self.author} - {self.post}"
