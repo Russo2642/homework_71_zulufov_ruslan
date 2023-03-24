@@ -1,2 +1,17 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% block content %}
+<div class="container">
+    {% include 'partial/search.html' %}
+    {% for user in user_obj %}
+        {% if user.avatar %}
+            <img style="width:80px; height:80px" src="user.avatar.url" alt="user avatar">
+        {% else %}
+            <img style="width:80px; height:80px" src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg" alt="user avatar">
+        {% endif %}
+    <p>{{ user.username }} </p>
+    <p>{{ user.get_full_name|default:user.username }}</p>
+    <p>{{ user.posts.all.count }}</p>
+    {% endfor %}
+</div>
+{% endblock %}
