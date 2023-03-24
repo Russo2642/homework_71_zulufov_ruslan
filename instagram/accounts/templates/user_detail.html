@@ -11,21 +11,15 @@
 {% endblock %}
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {% if user_obj in user_obj.subscriptions.all %}
-        <button class="btn btn-outline-danger" name="follow" value="unfollow" type="submit">
-            Отписаться @{{ user_obj.username }}
-        </button>
-    {% else %}
-        <button class="btn btn-outline-success" name="follow" value="follow" type="submit">
-            Подписаться @{{ user_obj.username }}
-        </button>
-    {% endif %}
-</form>
+{% if user_obj in user_obj.subscriptions.all %}
+    <a href="{% url 'follow' user_obj.pk %}">Отписаться</a>
+{% else %}
+    <a href="{% url 'follow' user_obj.pk %}">Подписаться</a>
+{% endif %}
 
     Публикаций: {{ user_obj.posts.all.count }}
-    Подписок: {{ user_obj.subscriptions.all.count }}
+    Подписки: {{ user_obj.subscribers.all.count }}
+    Подписчики: {{ user_obj.subscriptions.all.count }}
 
 
     <h1>Личная страница пользователя {{ user_obj.get_full_name|default:user_obj.username }}</h1>

@@ -77,22 +77,16 @@ class UserChangeView(UserPassesTestMixin, UpdateView):
         return reverse('profile', kwargs={'pk': self.object.pk})
 
     def test_func(self):
-        return self.get_object().username == str(self.request.user)
+        return self.get_object().email == str(self.request.user)
 
 
-# class FollowView(View):
-#     def post(self):
-#         user = get_user_model()
-def follow(request):
-    user = get_user_model()
-    # profile = Account.objects.get(user_id=pk)
-    if request.method == "POST":
-        current_user = request.user
-        action = request.POST['follow']
-        if action == 'unfollow':
-            current_user.subscriptions.remove(user)
-        elif action == 'follow':
-            current_user.subscriptions.add(user)
-        current_user.save()
-    # return render(request, 'index.html', {'user_follow': user})
-    return redirect('index')
+def follow(request, pk):
+    user_object = Account.object.get(pk=pk)
+    current_user = Account.object.get(username=request.user.username)
+    following = user_object.subscriptions.all()
+    if pk != current_user.pk:
+        if current_user in following:
+            user_object.subscriptions.remove(current_user.id)
+        else:
+            user_object.subscriptions.add(current_user.id)
+    return redirect(request.META.get('HTTP_REFERER'))
