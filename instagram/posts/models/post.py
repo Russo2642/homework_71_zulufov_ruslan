@@ -22,6 +22,12 @@ class Post(models.Model):
         blank=False,
         on_delete=models.CASCADE,
     )
+    likes = models.ManyToManyField(
+        to=get_user_model(),
+        blank=True,
+        related_name='likes',
+        verbose_name='Лайки'
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Дата и время создания"

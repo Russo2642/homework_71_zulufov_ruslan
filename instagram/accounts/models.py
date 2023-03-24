@@ -9,12 +9,6 @@ class StatusChoice(models.TextChoices):
 
 
 class Account(AbstractUser):
-    # username = models.CharField(
-    #     null=True,
-    #     blank=True,
-    #     max_length=500,
-    #     verbose_name='Логин'
-    # )
     email = models.EmailField(
         verbose_name='Электронная почта',
         unique=True,
@@ -26,17 +20,6 @@ class Account(AbstractUser):
         upload_to='user_pic',
         verbose_name='Аватар'
     )
-    # password = models.CharField(
-    #     null=False,
-    #     blank=False,
-    #     verbose_name='Пароль'
-    # )
-    # first_name = models.CharField(
-    #     null=True,
-    #     blank=True,
-    #     max_length=300,
-    #     verbose_name='Имя'
-    # )
     about_me = models.CharField(
         null=True,
         blank=True,
