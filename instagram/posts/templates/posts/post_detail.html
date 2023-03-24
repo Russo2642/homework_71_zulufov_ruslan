@@ -2,7 +2,13 @@
 {% block title %}Post{% endblock %}
 {% block menu %}
 {% if user.is_authenticated %}
-
+    {% if request.user == post.author %}
+        <a href="{% url 'post_update' post.pk %}">Редактировать пост</a>
+        <form method="POST" action="{% url 'post_delete' post.pk %}">
+            {% csrf_token %}
+            <input type="submit" class="btn" value="Удалить пост">
+        </form>
+    {% endif %}
 {% endif %}
 {% endblock %}
 {% block content %}

@@ -3,10 +3,13 @@ from accounts.forms import LoginForm
 from accounts.forms import UserChangeForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views import View
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
+
+from accounts.models import Account
 
 
 class LoginView(TemplateView):
@@ -38,8 +41,9 @@ class LoginView(TemplateView):
 
 
 def logout_view(request):
+    return_path = request.META.get('HTTP_REFERER', '/')
     logout(request)
-    return redirect('index')
+    return redirect(return_path)
 
 
 class RegisterView(CreateView):
@@ -57,13 +61,13 @@ class RegisterView(CreateView):
         return self.render_to_response(context)
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
+class ProfileView(DetailView):
     model = get_user_model()
     template_name = 'user_detail.html'
     context_object_name = 'user_obj'
 
 
-class UserChangeView(UpdateView):
+class UserChangeView(UserPassesTestMixin, UpdateView):
     model = get_user_model()
     form_class = UserChangeForm
     template_name = 'user_change.html'
@@ -71,3 +75,24 @@ class UserChangeView(UpdateView):
 
     def get_success_url(self):
         return reverse('profile', kwargs={'pk': self.object.pk})
+
+    def test_func(self):
+        return self.get_object().username == str(self.request.user)
+
+
+# class FollowView(View):
+#     def post(self):
+#         user = get_user_model()
+def follow(request):
+    user = get_user_model()
+    # profile = Account.objects.get(user_id=pk)
+    if request.method == "POST":
+        current_user = request.user
+        action = request.POST['follow']
+        if action == 'unfollow':
+            current_user.subscriptions.remove(user)
+        elif action == 'follow':
+            current_user.subscriptions.add(user)
+        current_user.save()
+    # return render(request, 'index.html', {'user_follow': user})
+    return redirect('index')

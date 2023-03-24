@@ -1,8 +1,8 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from posts.forms import CommentForm
 from posts.forms import PostForm
 from posts.models import Post
@@ -28,6 +28,28 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostDetailView(DetailView):
     template_name = 'posts/post_detail.html'
     model = Post
+
+
+class PostUpdateView(UserPassesTestMixin, UpdateView):
+    template_name = 'posts/post_update.html'
+    model = Post
+    form_class = PostForm
+
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'pk': self.object.pk})
+
+    def test_func(self):
+        return self.get_object().author == self.request.user
+
+
+class PostDeleteView(UserPassesTestMixin, DeleteView):
+    model = Post
+
+    def get_success_url(self):
+        return reverse('profile', kwargs={'pk': self.object.author_id})
+
+    def test_func(self):
+        return self.get_object().author == self.request.user
 
 
 class AddLike(LoginRequiredMixin, View):

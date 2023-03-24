@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Post Create{% endblock %}
+{% block content %}
+    <h1>New Post</h1>
+    <div class="form">
+        <form action="{% url 'post_update' post.pk %}" method="post" enctype="multipart/form-data">
+            {% include 'partial/post_form.html' with button_text='Редактировать' %}
+        </form>
+    </div>
+{% endblock %}
