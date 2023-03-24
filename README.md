@@ -1,4 +1,4 @@
 # homework_63_zulufov_ruslan
 Данные админки:  
- Логин - admin  
- Пароль - admin  
+ Логин - ruslan@gmail.com  
+ Пароль - ruslan  
