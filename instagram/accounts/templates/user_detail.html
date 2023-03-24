@@ -10,13 +10,12 @@
     <h1>Личная страница пользователя {{ user_obj.get_full_name|default:user_obj.username }}</h1>
     {% if user_obj.avatar %}
         <img class="avatar" src="{{ user_obj.avatar.url }}" width="150px" height="150px" alt="user picture">
+    {% else %}
+        <img width="150px" height="150px" src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg" alt="user picture">
     {% endif %}
     <p>Имя пользователя: {{ user_obj.username }}</p>
-    <p>Имя: {{ user_obj.first_name }}</p>
-    <p>Фамилия: {{ user_obj.last_name }}</p>
+    <p>Имя: {{ user_obj.get_full_name }}</p>
     <p>Обо мне: {{ user_obj.about_me }}</p>
-    <p>Пол: {{ user_obj.get_gender_display }}</p>
-    <p>Почта: {{ user_obj.email }}</p>
 
     {% for post in user_obj.posts.all %}
     <a href="{% url 'post_detail' post.pk %}"><img style="width:250px;height:250px" src="{{ post.image.url }}" alt=""></a>
