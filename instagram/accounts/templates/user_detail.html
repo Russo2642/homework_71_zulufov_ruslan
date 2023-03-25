@@ -3,10 +3,10 @@
 
 {% block menu %}
 {% if user.is_authenticated %}
-
+    {% if request.user == user_obj %}
     <li><a href=" {% url 'change' user_obj.pk %}" class="btn btn-primary">Редактировать</a></li>
     <li><a href="#" class="btn btn-primary">Смена пароля</a></li>
-
+    {% endif %}
 {% endif %}
 {% endblock %}
 

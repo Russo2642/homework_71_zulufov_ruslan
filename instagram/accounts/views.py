@@ -77,7 +77,7 @@ class UserChangeView(UserPassesTestMixin, UpdateView):
         return reverse('profile', kwargs={'pk': self.object.pk})
 
     def test_func(self):
-        return self.get_object().email == str(self.request.user)
+        return self.get_object() == self.request.user
 
 
 def follow(request, pk):

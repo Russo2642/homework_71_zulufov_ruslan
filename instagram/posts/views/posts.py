@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.edit import FormMixin
 from posts.forms import CommentForm
 from posts.forms import PostForm
+from posts.models import Comment
 from posts.models import Post
 
 
@@ -16,18 +18,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('post_detail', kwargs={'pk': self.object.pk})
 
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form()
-    #     if form.is_valid():
-    #         form = form.save(commit=False)
-    #         form.author = request.user
-    #         form.save()
-    #     return reverse('profile', kwargs={'pk': str(request.user.pk)})
 
-
-class PostDetailView(DetailView):
+class PostDetailView(FormMixin, DetailView):
     template_name = 'posts/post_detail.html'
     model = Post
+    form_class = CommentForm
 
 
 class PostUpdateView(UserPassesTestMixin, UpdateView):
@@ -77,3 +72,13 @@ class AddComments(LoginRequiredMixin, View):
             form.author = request.user
             form.save()
         return redirect(request.META.get('HTTP_REFERER'))
+
+
+class DeleteComments(UserPassesTestMixin, DeleteView):
+    model = Comment
+
+    def get_success_url(self):
+        return reverse('post_detail', kwargs={'pk': self.object.post_id})
+
+    def test_func(self):
+        return self.request.user == self.get_object().author

@@ -19,8 +19,9 @@
         {% else %}
             <a href="{% url 'profile' user.pk %}"><img style="width:80px; height:80px" src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg" alt="user avatar"></a>
         {% endif %}
-    <p><a href="{% url 'profile' user.pk %}">{{ user.username }}</a></p>
-    <p><a href="{% url 'profile' user.pk %}">{{ user.get_full_name }}</a></p>
+        <p><a href="{% url 'profile' user.pk %}">{{ user.email }}</a></p>
+        <p><a href="{% url 'profile' user.pk %}">{{ user.get_full_name }}</a></p>
+        <p><img src="{{ user.posts.image.url }}" alt=""></p>
     {% endfor %}
 
 </div>
