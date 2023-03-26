@@ -11,38 +11,23 @@
     <title>{% block title %}Blog{% endblock %}</title>
 </head>
 <body>
-<nav class="navbar">
-    <div class="container">
-        <ul class="menu">
-            <li>
-                <a href="{% url 'index' %}">Главная</a>
-            </li>
-            {% block menu %}{% endblock %}
+<header>
+        <div class="container">
             {% if user.is_authenticated %}
-            <li>
-                <a href="{% url 'post_create' %}">Добавить публикацию</a>
-            </li>
-            <li>
-                <a href="{% url 'profile' user.pk %}">Профиль</a>
-            </li>
-            <li>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" class="btn btn-danger" value="Выйти">
-                </form>
-            </li>
-            <li>
-                Привет, {{ user.username }}
-            </li>
-            {% else %}
-            <li>
-                <a href="{% url 'login' %}" class="btn btn-success">Войти</a>
-                <a href="{% url 'register' %}" class="btn btn-primary">Зарегестрироваться</a>
-            </li>
+            <a href="{% url 'index' %}" class="logo">
+                <img src="../../../static/img/logo.webp" alt=""> | <span>Instagram</span>
+            </a>
+            <form class="form-inline" action="{% url 'index' %}" method="get">
+                <input type="text" name="search" type="search" placeholder="Поиск">
+            </form>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <input style="width:100px" type="submit" class="btn btn-danger" value="Выйти">
+            </form>
             {% endif %}
-        </ul>
-    </div>
-</nav>
+            {% block menu %}{% endblock %}
+        </div>
+    </header>
 <div class="container">
     {% block content %}{% endblock %}
 </div>

@@ -1,15 +1,13 @@
 from accounts.forms import CustomUserCreationForm
 from accounts.forms import LoginForm
 from accounts.forms import UserChangeForm
+from accounts.models import Account
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect, render
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse
-from django.views import View
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
-
-from accounts.models import Account
 
 
 class LoginView(TemplateView):
@@ -26,14 +24,13 @@ class LoginView(TemplateView):
         if not form.is_valid():
             messages.error(request, 'Некорректные данные')
             return redirect('index')
-        email = form.cleaned_data.get('email')
+        username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=username, password=password)
         if not user:
             messages.error(request, 'Пользователь не найден')
             return redirect('login')
         login(request, user)
-        messages.success(request, 'Добро пожаловать')
         next = request.GET.get('next')
         if next:
             return redirect(next)
@@ -41,9 +38,9 @@ class LoginView(TemplateView):
 
 
 def logout_view(request):
-    return_path = request.META.get('HTTP_REFERER', '/')
+    #return_path = request.META.get('HTTP_REFERER', '/')
     logout(request)
-    return redirect(return_path)
+    return redirect('login')
 
 
 class RegisterView(CreateView):
@@ -61,7 +58,7 @@ class RegisterView(CreateView):
         return self.render_to_response(context)
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     model = get_user_model()
     template_name = 'user_detail.html'
     context_object_name = 'user_obj'
@@ -81,8 +78,8 @@ class UserChangeView(UserPassesTestMixin, UpdateView):
 
 
 def follow(request, pk):
-    user_object = Account.object.get(pk=pk)
-    current_user = Account.object.get(username=request.user.username)
+    user_object = Account.objects.get(pk=pk)
+    current_user = Account.objects.get(username=request.user.username)
     following = user_object.subscriptions.all()
     if pk != current_user.pk:
         if current_user in following:

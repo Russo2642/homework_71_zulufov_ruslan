@@ -1,12 +1,14 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from posts.models import Comment
 from posts.models import Post
 
 
 class PostForm(forms.ModelForm):
+
     class Meta:
         model = Post
-        fields = ('image', 'description', 'author')
+        fields = ('image', 'description')
         labels = {
             'image': 'Картинка',
             'description': 'Описание'

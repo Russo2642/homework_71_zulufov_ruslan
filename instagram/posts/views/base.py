@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import DetailView
 
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
     def get(self, request):
         query = request.GET.get('search')
         context = {}
@@ -18,6 +18,6 @@ class IndexView(View):
         else:
             users = get_user_model().objects.filter(Q(subscriptions=request.user.pk))
             context = {
-                'user_obj': users
+                'user_posts': users
             }
         return render(request, 'index.html', context=context)

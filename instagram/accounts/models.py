@@ -34,7 +34,7 @@ class Account(AbstractUser):
     )
     gender = models.CharField(
         choices=StatusChoice.choices,
-        default=StatusChoice.MALE,
+
         max_length=7,
         verbose_name='Пол'
     )
@@ -54,10 +54,8 @@ class Account(AbstractUser):
         related_name='user_comments'
     )
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
-
-    object = UserManager()
 
     class Meta:
         verbose_name = 'Профиль'

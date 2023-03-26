@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% block menu %}
+    <a href="{% url 'profile' user.pk %}" class="profile">
+        <img src="../../../static/img/profile.png" alt="">
+    </a>
+{% endblock %}
 {% block content %}
 <div class="container">
- {#   {% include 'partial/search.html' %} #}
-    <form class="form-inline" action="{% url 'index' %}" method="get">
-            <div class="col-4">
-                <div class="input-group">
-                    <input class="form-control" name="search" type="search" placeholder="Поиск">
-                    <span class="input-group-btn">
-                        <button class="btn btn-outline-success" type="submit">Поиск</button>
-                    </span>
-                </div>
-            </div>
-        </form>
+    {% if user.is_authenticated %}
     {% for user in user_obj %}
         {% if user.avatar %}
             <a href="{% url 'profile' user.pk %}"><img style="width:80px; height:80px" src="{{ user.avatar.url }}" alt="user avatar"></a>
         {% else %}
             <a href="{% url 'profile' user.pk %}"><img style="width:80px; height:80px" src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg" alt="user avatar"></a>
         {% endif %}
-        <p><a href="{% url 'profile' user.pk %}">{{ user.email }}</a></p>
+        <p><a href="{% url 'profile' user.pk %}">{{ user.username }}</a></p>
         <p><a href="{% url 'profile' user.pk %}">{{ user.get_full_name }}</a></p>
-        <p><img src="{{ user.posts.image.url }}" alt=""></p>
     {% endfor %}
+    {% endif %}
+
+    {% for post in user_posts.posts.all %}
+        <a href="{% url 'post_detail' post.pk %}"><img src="{{ post.image.url }}" alt=""></a>
+    {% endfor %}
+
 
 </div>
 {% endblock %}
