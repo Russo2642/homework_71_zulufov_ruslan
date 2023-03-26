@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% block content %}
-<form method="post">
-    <div class="form">
-        {% csrf_token %}
-        {% bootstrap_form form %}
+<div class="container">
+    <div class="login-form">
+        <form method="post">
+            <div class="login">
+                <div class="logo-login-form">
+                    <img src="https://smm-wiki.com/wp-content/uploads/2018/11/igtv-v-instagram-kak-posmotret.png"
+                         alt="logo insta">
+                </div>
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% bootstrap_button button_type="submit" content='Войти' %}
+            </div>
+        </form>
     </div>
-    <div class="form_row">
-        {% bootstrap_button button_type="submit" content='Войти' %}
+    <div class="login-register-form">
+        <p style="font-size:14px; text-align:center">У вас нет аккаунта?
+            <a href="{% url 'register' %}">Зарегестрироваться</a>
+        </p>
     </div>
-</form>
-
+</div>
 {% endblock %}

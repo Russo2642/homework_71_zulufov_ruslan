@@ -11,7 +11,9 @@
 {% endblock %}
 
 {% block content %}
-{% if user_obj in user_obj.subscriptions.all %}
+
+
+{% if request.user in user_obj.subscriptions.all %}
     <a href="{% url 'follow' user_obj.pk %}">Отписаться</a>
 {% else %}
     <a href="{% url 'follow' user_obj.pk %}">Подписаться</a>
