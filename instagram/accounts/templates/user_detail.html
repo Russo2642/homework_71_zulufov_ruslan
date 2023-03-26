@@ -1,64 +1,77 @@
 {% extends 'base.html' %}
 {% block title %}Пользователь{% endblock %}
+{% block menu %}
+{% if user_obj == request.user %}
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <input style="width:100px" type="submit" class="btn btn-danger" value="Выйти">
+</form>
+{% endif %}
+{% endblock %}
 
 {% block content %}
 
-    <div class="container-profile">
-        <div class="user-profile">
-            <div class="avatar">
-                {% if user_obj.avatar %}
-                    <img class="avatar" src="{{ user_obj.avatar.url }}" alt="user picture">
+<div class="container-profile">
+    <div class="user-profile">
+        <div class="avatar">
+            {% if user_obj.avatar %}
+            <img class="avatar" src="{{ user_obj.avatar.url }}" alt="user picture">
+            {% else %}
+            <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
+                 alt="user picture">
+            {% endif %}
+        </div>
+        <div class="user-info">
+            <div class="user-info-top">
+                <span>{{ user_obj.username }}</span>
+                {% if user_obj == request.user %}
+                <button><a href="{% url 'change' user_obj.pk %}" style="text-decoration:None; color:black;">Редактировать
+                    профиль</a></button>
+                <button><a href="{% url 'post_create' %}" style="text-decoration:None; color:black;">Добавить
+                    публикацию</a></button>
                 {% else %}
-                    <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg" alt="user picture">
+                {% if request.user in user_obj.subscriptions.all %}
+                <button><a href="{% url 'follow' user_obj.pk %}"
+                           style="text-decoration:None; color:black;">Отписаться</a></button>
+                {% else %}
+                <button><a href="{% url 'follow' user_obj.pk %}"
+                           style="text-decoration:None; color:black;">Подписаться</a></button>
+                {% endif %}
                 {% endif %}
             </div>
-            <div class="user-info">
-                <div class="user-info-top">
-                    <span>{{ user_obj.username }}</span>
-                    {% if user_obj == request.user %}
-                        <button><a href="{% url 'change' user_obj.pk %}" style="text-decoration:None; color:black;">Редактировать профиль</a></button>
-                        <button><a href="{% url 'post_create' %}" style="text-decoration:None; color:black;">Добавить публикацию</a></button>
-                    {% else %}
-                        {% if request.user in user_obj.subscriptions.all %}
-                            <button><a href="{% url 'follow' user_obj.pk %}" style="text-decoration:None; color:black;">Отписаться</a></button>
-                        {% else %}
-                            <button><a href="{% url 'follow' user_obj.pk %}" style="text-decoration:None; color:black;">Подписаться</a></button>
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <div class="user-info-stats">
-                    <div><span>{{ user_obj.posts.all.count }}</span> Публикаций</div>
-                    <div><span>{{ user_obj.subscriptions.all.count }}</span> Подписчиков</div>
-                    <div><span>{{ user_obj.subscribers.all.count }}</span> Подписки</div>
-                </div>
-                <div class="user-info-short">
-                    <p><b>{{ user_obj.get_full_name }}</b></p>
-                    {% if user_obj.about_me %}
-                        <p>{{ user_obj.about_me }}</p>
-                    {% else %}
-                        <span></span>
-                    {% endif %}
-                    {% if user_obj.phone %}
-                        <p>{{ user_obj.phone }}</p>
-                    {% else %}
-                        <span></span>
-                    {% endif %}
-                    {% if user_obj.gender != 'GENDER' %}
-                        <p>Пол: {{ user_obj.get_gender_display }}</p>
-                    {% else %}
-                        <span></span>
-                    {% endif %}
-                </div>
+            <div class="user-info-stats">
+                <div><span>{{ user_obj.posts.all.count }}</span> Публикаций</div>
+                <div><span>{{ user_obj.subscriptions.all.count }}</span> Подписчиков</div>
+                <div><span>{{ user_obj.subscribers.all.count }}</span> Подписки</div>
+            </div>
+            <div class="user-info-short">
+                <p><b>{{ user_obj.get_full_name }}</b></p>
+                {% if user_obj.about_me %}
+                <p>{{ user_obj.about_me }}</p>
+                {% else %}
+                <span></span>
+                {% endif %}
+                {% if user_obj.phone %}
+                <p>{{ user_obj.phone }}</p>
+                {% else %}
+                <span></span>
+                {% endif %}
+                {% if user_obj.gender != 'GENDER' %}
+                <p>Пол: {{ user_obj.get_gender_display }}</p>
+                {% else %}
+                <span></span>
+                {% endif %}
             </div>
         </div>
     </div>
+</div>
 
-    <div class="user-grid">
-        {% for post in user_obj.posts.all %}
-            {% if post.image %}
-                <a href="{% url 'post_detail' post.pk %}"><img src="{{ post.image.url }}" alt=""></a>
-            {% endif %}
-        {% endfor %}
-    </div>
+<div class="user-grid">
+    {% for post in user_obj.posts.all %}
+    {% if post.image %}
+    <a href="{% url 'post_detail' post.pk %}"><img src="{{ post.image.url }}" alt=""></a>
+    {% endif %}
+    {% endfor %}
+</div>
 
 {% endblock %}

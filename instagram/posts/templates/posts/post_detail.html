@@ -1,113 +1,87 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% block title %}Post{% endblock %}
-{% block menu %}
-{% if user.is_authenticated %}
-    {% if request.user == post.author %}
-        <a href="{% url 'post_update' post.pk %}">Редактировать пост</a>
-        <form method="POST" action="{% url 'post_delete' post.pk %}">
-            {% csrf_token %}
-            <input type="submit" class="btn" value="Удалить пост">
-        </form>
-    {% endif %}
-{% endif %}
-{% endblock %}
+
 {% block content %}
-<div class="container">
-    <h1>Post</h1>
-    <p>{{ post.description }}</p>
-    {% if post.image %}
-    <p><img src="{{ post.image.url }}" alt="post image" style="width:200px; height:200px"></p>
-    {% endif %}
-    <form method="post" action="{% url 'add_like' post.pk %}">
-        {% csrf_token %}
-        <input type="submit" value="Like">
-    </form>
-    <span>{{ post.likes.all.count }}</span>
-    <span>{{ post.comments.all.count  }}</span>
 
-
-    {% load django_bootstrap5 %}
-    <form method="post" action="{% url 'comments_add' post.pk %}">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input class="btn btn-outline-primary" type="submit" value="Отправить">
-    </form>
-
-
-    <div>
-        {% for comment in post.comments.all %}
-        <div class="view-comment">
-            <h4>{{ comment.author }}</h4>
-            <p>
-                {{ comment.text }}
-            </p>
-            <p>
-                {% if request.user == comment.author %}
-                    <form method="POST" action="{% url 'comments_delete' comment.pk %}">
-                        {% csrf_token %}
-                        <input type="submit" class="btn btn-outline-danger" value="Удалить">
-                    </form>
+<main>
+    <div class="post">
+        <div class="post-top">
+            <div class="post-top__left">
+                {% if user_obj.avatar %}
+                <img src="{{ user_obj.avatar.url }}" alt=""> <span>{{ post.author }}</span>
+                {% else %}
+                <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
+                     alt="user picture"> <span>{{ post.author }}</span>
                 {% endif %}
-            </p>
+            </div>
+            <div class="post-top__right">
+                {% if request.user == comment.author %}
+                <a href="{% url 'post_update' post.pk %}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+                <form method="POST" action="{% url 'post_delete' post.pk %}">
+                    {% csrf_token %}
+                    <button class="trash-icon" style="border:none" type="submit"><i class="fa-regular fa-trash"></i>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="post-image">
+            <div>
+                <img src="{{ post.image.url }}" alt="post image">
+            </div>
+        </div>
+        <div class="post-content">
+            <div style="padding-top:30px" class="post-activity">
+                <form method="post" action="{% url 'add_like' post.pk %}">
+                    {% csrf_token %}
+                    <button class="button-like" type="submit"><i class="fa-regular fa-heart"></i></button>
+                </form>
+                <i style="font-size:30px;" class="fa-regular fa-comment"></i> {{ post.comments.all.count }}
+            </div>
+            <div class="post-stats">
+                <span>{{ post.likes.all.count }}</span> отметок нравится
+            </div>
+            <div class="post-text">
+                <span>{{ post.author }}</span> {{ post.description }}
+            </div>
+            <div class="post-comment__area">
+                <form method="post" action="{% url 'comments_add' post.pk %}">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit">Опубликовать</button>
+                </form>
+            </div>
+        </div>
+
+
+        {% for comment in post.comments.all %}
+        <div class="post-top__left comment-top__left">
+            {% if comment.author.avatar %}
+            <p><img src="{{ comment.author.avatar.url }}" alt=""></p>
+            <p>{{ comment.author }}</p>
+            {% else %}
+            <p>
+                <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
+                     alt="user picture"></p>
+            <p>{{ comment.author }}</p>
+            {% if request.user == comment.author %}
+            <form method="POST" action="{% url 'comments_delete' comment.pk %}">
+                {% csrf_token %}
+                <button class="trash-icon" style="border:none" type="submit"><i class="fa-regular fa-trash"></i>
+                </button>
+            </form>
+            {% endif %}
+
+            {% endif %}
+        </div>
+        <div class="comment-text">
+            {{ comment.text }}
         </div>
         {% endfor %}
     </div>
-</div>
 
-
-
-
-
-    <main>
-        <div class="post">
-            <div class="post-top">
-                <div class="post-top__left">
-                    {% if user_obj.avatar %}
-                        <img src="{{ user_obj.avatar.url }}" alt=""> <span>{{ post.author }}</span>
-                    {% else %}
-                        <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg" alt="user picture"> <span>{{ post.author }}</span>
-                    {% endif %}
-                </div>
-                <div class="post-top__right">
-                    ...
-                </div>
-            </div>
-            <div class="post-image">
-                <div>
-                    <img src="{{ post.image.url }}" alt="post image">
-                </div>
-            </div>
-            <div class="post-content">
-                <div style="padding-top:20px" class="post-activity">
-                    <form method="post" action="{% url 'add_like' post.pk %}">
-                        {% csrf_token %}
-                        <input type="image" value="Like" src="../../../static/img/like.png">
-                    </form>
-                    <a href="{% url 'add_like' post.pk %}"><img src="../../../static/img/like.png" alt=""></a>
-
-
-                    <img src="../../../static/img/comment.png" alt="">{{ post.comments.all.count }}
-                </div>
-                <div class="post-stats">
-                    <span>{{ post.likes.all.count }}</span> отметок нравится
-                </div>
-                <div class="post-text">
-                    <span>{{ post.author }}</span> {{ post.description }}
-                </div>
-                <div class="post-comment__area">
-                    <input type="text" placeholder="Комментарий...">
-                    <button>Опубликовать</button>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-
-
-
-
-
+</main>
 
 
 {% endblock %}
