@@ -5,10 +5,10 @@
 
 
 <div class="container">
-    {% for user in user_obj %}
-    {% for post in user.posts.all %}
     <div class="post">
-        <div class="post-top">
+        {% for user in user_obj %}
+        {% for post in user.posts.all %}
+        <div style="margin-top:45px;" class="post-top">
             <div class="post-top__left">
                 {% if post.author.avatar %}
                 <img src="{{ post.author.avatar.url }}" alt="">
@@ -45,6 +45,7 @@
             </div>
             <div class="post-text">
                 <span>{{ post.author }}</span> {{ post.description }}
+                <p style="font-size:15px; color:grey;">{{ post.created_at }}</p>
             </div>
             <div class="post-comment__area">
                 <form method="post" action="{% url 'comments_add' post.pk %}">

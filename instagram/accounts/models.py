@@ -42,7 +42,6 @@ class Account(AbstractUser):
         related_name='subscribers'
     )
 
-
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
