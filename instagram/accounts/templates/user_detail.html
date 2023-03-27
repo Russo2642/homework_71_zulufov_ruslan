@@ -41,8 +41,12 @@
             </div>
             <div class="user-info-stats">
                 <div><span>{{ user_obj.posts.all.count }}</span> Публикаций</div>
-                <div><span>{{ user_obj.subscriptions.all.count }}</span> Подписчиков</div>
-                <div><span>{{ user_obj.subscribers.all.count }}</span> Подписки</div>
+
+                <div><a style="color:black;" href="{% url 'subscriptions' user_obj.pk %}">
+                    <span>{{ user_obj.subscriptions.all.count }}</span> Подписчиков</a></div>
+
+                <div><a style="color:black;" href="{% url 'subscribers' user_obj.pk %}">
+                    <span>{{ user_obj.subscribers.all.count }}</span> Подписки</a></div>
             </div>
             <div class="user-info-short">
                 <p><b>{{ user_obj.get_full_name }}</b></p>

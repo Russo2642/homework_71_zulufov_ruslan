@@ -5,9 +5,10 @@ from accounts.models import Account
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
+from django.views import View
+from django.views.generic import TemplateView, CreateView, DetailView, UpdateView, ListView
 
 
 class LoginView(TemplateView):
@@ -86,3 +87,15 @@ def follow(request, pk):
         else:
             user_object.subscriptions.add(current_user.id)
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+class SubscribersView(DetailView):
+    model = get_user_model()
+    template_name = 'subscribers.html'
+    context_object_name = 'user_obj'
+
+
+class SubscriptionsView(DetailView):
+    model = get_user_model()
+    template_name = 'subscription.html'
+    context_object_name = 'user_obj'

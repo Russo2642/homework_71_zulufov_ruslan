@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Subscribers{% endblock %}
+{% block content %}
+
+<div class="container">
+    <h1>Подписки</h1>
+    {% for subscriber in user_obj.subscribers.all %}
+    <div class="post">
+        <div class="post-top">
+            <div class="post-top__left">
+                {% if subscriber.avatar %}
+                <img src="{{ subscriber.avatar.url }}" alt="">
+                <a style="text-decoration:none; color:black;" href="{% url 'profile' subscriber.pk %}">{{ subscriber.username }}</a>
+                {% else %}
+                <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
+                     alt="user picture">
+                <a style="text-decoration:none; color:black;" href="{% url 'profile' subscriber.pk %}">{{ subscriber.username }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
