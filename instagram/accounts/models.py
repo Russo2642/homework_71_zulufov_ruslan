@@ -1,4 +1,3 @@
-from accounts.managers import UserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -34,7 +33,6 @@ class Account(AbstractUser):
     )
     gender = models.CharField(
         choices=StatusChoice.choices,
-
         max_length=7,
         verbose_name='Пол'
     )

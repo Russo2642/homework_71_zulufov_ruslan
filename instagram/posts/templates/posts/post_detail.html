@@ -8,34 +8,44 @@
     <div class="post">
         <div class="post-top">
             <div class="post-top__left">
-                {% if user_obj.avatar %}
-                <img src="{{ user_obj.avatar.url }}" alt=""> <span>{{ post.author }}</span>
+                {% if post.author.avatar %}
+                <img src="{{ post.author.avatar.url }}" alt=""> <span>{{ post.author }}</span>
                 {% else %}
                 <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
                      alt="user picture"> <span>{{ post.author }}</span>
                 {% endif %}
             </div>
             <div class="post-top__right">
-                {% if request.user == comment.author %}
-                <a href="{% url 'post_update' post.pk %}"><i class="fa-sharp fa-solid fa-pen"></i></a>
-                <form method="POST" action="{% url 'post_delete' post.pk %}">
-                    {% csrf_token %}
-                    <button class="trash-icon" style="border:none" type="submit"><i class="fa-regular fa-trash"></i>
-                    </button>
-                </form>
+                {% if request.user == post.author %}
+
+                <div class="dropdown">
+                    <button class="dropbtn">...</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'post_update' post.pk %}">Редактировать</a>
+                        <form method="POST" action="{% url 'post_delete' post.pk %}">
+                            {% csrf_token %}
+                            <input style="border:none; background-color:white; color: red;" type="submit" value="Удалить">
+                        </form>
+                    </div>
+                </div>
+
                 {% endif %}
             </div>
         </div>
         <div class="post-image">
             <div>
-                <img src="{{ post.image.url }}" alt="post image">
+                <img style="height:80%" src="{{ post.image.url }}" alt="post image">
             </div>
         </div>
         <div class="post-content">
             <div style="padding-top:30px" class="post-activity">
                 <form method="post" action="{% url 'add_like' post.pk %}">
                     {% csrf_token %}
+                    {% if request.user in post.likes.all %}
+                    <button class="button-like-active" type="submit"><i class="fa-regular fa-heart"></i></button>
+                    {% else %}
                     <button class="button-like" type="submit"><i class="fa-regular fa-heart"></i></button>
+                    {% endif %}
                 </form>
                 <i style="font-size:30px;" class="fa-regular fa-comment"></i> {{ post.comments.all.count }}
             </div>
@@ -59,12 +69,14 @@
         <div class="post-top__left comment-top__left">
             {% if comment.author.avatar %}
             <p><img src="{{ comment.author.avatar.url }}" alt=""></p>
-            <p>{{ comment.author }}</p>
+            <p><a style="text-decoration:none; color:black;" href="{% url 'profile' comment.author.pk %}">
+                {{ comment.author }}</a></p>
             {% else %}
             <p>
                 <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
                      alt="user picture"></p>
-            <p>{{ comment.author }}</p>
+            <p><a style="text-decoration:none; color:black;" href="{% url 'profile' comment.author.pk %}">
+                {{ comment.author }}</a></p>
             {% if request.user == comment.author %}
             <form method="POST" action="{% url 'comments_delete' comment.pk %}">
                 {% csrf_token %}

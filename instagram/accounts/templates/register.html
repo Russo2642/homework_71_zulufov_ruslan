@@ -2,23 +2,23 @@
 {% block title %}Cоздать пользователя{% endblock %}
 {% load django_bootstrap5 %}
 {% block content %}
-    <div class="login-form">
-        <form method="post">
-            <div class="login">
-                <div class="logo-login-form">
-                    <img src="https://smm-wiki.com/wp-content/uploads/2018/11/igtv-v-instagram-kak-posmotret.png"
-                         alt="logo insta">
-                </div>
-                {% csrf_token %}
-                {% bootstrap_form form %}
-                {% bootstrap_button button_type="submit" content='Регистрация' %}
-            </div>
+<div class="login-form">
+    <div class="login">
+        <div class="logo-login-form">
+            <img src="https://smm-wiki.com/wp-content/uploads/2018/11/igtv-v-instagram-kak-posmotret.png"
+                 alt="logo insta">
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% bootstrap_button button_type="submit" content='Зарегестрироваться' %}
         </form>
     </div>
-    <div class="login-register-form">
-        <p style="font-size:14px; text-align:center">Есть аккаунт?
-            <a href="{% url 'login' %}">Вход</a>
-        </p>
-    </div>
+</div>
+<div class="login-register-form">
+    <p style="font-size:14px; text-align:center">Есть аккаунт?
+        <a href="{% url 'login' %}">Вход</a>
+    </p>
+</div>
 
 {% endblock %}
