@@ -2,23 +2,112 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
+
+
 <div class="container">
-    {% if user.is_authenticated %}
     {% for user in user_obj %}
-        {% if user.avatar %}
-            <a href="{% url 'profile' user.pk %}"><img style="width:80px; height:80px" src="{{ user.avatar.url }}" alt="user avatar"></a>
-        {% else %}
-            <a href="{% url 'profile' user.pk %}"><img style="width:80px; height:80px" src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg" alt="user avatar"></a>
-        {% endif %}
-        <p><a href="{% url 'profile' user.pk %}">{{ user.username }}</a></p>
-        <p><a href="{% url 'profile' user.pk %}">{{ user.get_full_name }}</a></p>
-    {% endfor %}
-    {% endif %}
+    {% for post in user.posts.all %}
+    <div class="post">
+        <div class="post-top">
+            <div class="post-top__left">
+                {% if post.author.avatar %}
+                <img src="{{ post.author.avatar.url }}" alt="">
+                <a style="text-decoration:none; color:black;" href="{% url 'profile' post.author.pk %}">
+                    {{ post.author }}</a>
+                {% else %}
+                <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
+                     alt="user picture">
+                <a style="text-decoration:none; color:black;" href="{% url 'profile' post.author.pk %}">
+                    {{ post.author }}</a>
+                {% endif %}
+            </div>
 
-    {% for post in user_posts.posts.all %}
-        <a href="{% url 'post_detail' post.pk %}"><img src="{{ post.image.url }}" alt=""></a>
-    {% endfor %}
+        </div>
+        <div class="post-image">
+            <div>
+                <img src="{{ post.image.url }}" alt="post image">
+            </div>
+        </div>
+        <div class="post-content">
+            <div style="padding-top:30px" class="post-activity">
+                <form method="post" action="{% url 'add_like' post.pk %}">
+                    {% csrf_token %}
+                    {% if request.user in post.likes.all %}
+                    <button class="button-like-active" type="submit"><i class="fa-regular fa-heart"></i></button>
+                    {% else %}
+                    <button class="button-like" type="submit"><i class="fa-regular fa-heart"></i></button>
+                    {% endif %}
+                </form>
+                <i style="font-size:30px;" class="fa-regular fa-comment"></i> {{ post.comments.all.count }}
+            </div>
+            <div class="post-stats">
+                <span>{{ post.likes.all.count }}</span> отметок нравится
+            </div>
+            <div class="post-text">
+                <span>{{ post.author }}</span> {{ post.description }}
+            </div>
+            <div class="post-comment__area">
+                <form method="post" action="{% url 'comments_add' post.pk %}">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    <button type="submit">Опубликовать</button>
+                </form>
+            </div>
+        </div>
 
 
+        {% for comment in post.comments.all %}
+        <div class="post-top__left comment-top__left">
+            {% if comment.author.avatar %}
+            <p><img src="{{ comment.author.avatar.url }}" alt=""></p>
+            <p><a style="text-decoration:none; color:black;" href="{% url 'profile' comment.author.pk %}">
+                {{ comment.author }}</a></p>
+            {% else %}
+            <p>
+                <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
+                     alt="user picture"></p>
+            <p><a style="text-decoration:none; color:black;" href="{% url 'profile' comment.author.pk %}">
+                {{ comment.author }}</a></p>
+            {% endif %}
+            {% if request.user == comment.author %}
+            <form method="POST" action="{% url 'comments_delete' comment.pk %}">
+                {% csrf_token %}
+                <button class="trash-icon" style="border:none" type="submit"><i class="fa-regular fa-trash"></i>
+                </button>
+            </form>
+            {% endif %}
+
+        </div>
+        <div class="comment-text">
+            {{ comment.text }}
+        </div>
+        {% endfor %}
+
+
+        {% endfor %}
+        {% endfor %}
+    </div>
 </div>
+
+
+<div class="container">
+    {% for user in user_search %}
+    <div class="post">
+        <div class="post-top">
+            <div class="post-top__left">
+                {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="">
+                <a style="text-decoration:none; color:black;" href="{% url 'profile' user.pk %}">{{ user.username }}</a>
+                {% else %}
+                <img src="https://abrakadabra.fun/uploads/posts/2021-12/thumbs/1640528649_39-abrakadabra-fun-p-serii-chelovek-na-avu-44.jpg"
+                     alt="user picture">
+                <a style="text-decoration:none; color:black;" href="{% url 'profile' user.pk %}">{{ user.username }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
 {% endblock %}

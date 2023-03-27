@@ -36,21 +36,12 @@ class Account(AbstractUser):
         max_length=7,
         verbose_name='Пол'
     )
-    liked_posts = models.ManyToManyField(
-        verbose_name='Понравившееся публикации',
-        to='posts.Post',
-        related_name='user_likes'
-    )
     subscriptions = models.ManyToManyField(
         verbose_name='Подписки',
         to='accounts.Account',
         related_name='subscribers'
     )
-    commented_posts = models.ManyToManyField(
-        verbose_name='Прокомментированные публикации',
-        to='posts.Post',
-        related_name='user_comments'
-    )
+
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []

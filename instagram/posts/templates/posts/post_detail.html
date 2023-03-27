@@ -34,7 +34,7 @@
         </div>
         <div class="post-image">
             <div>
-                <img style="height:80%" src="{{ post.image.url }}" alt="post image">
+                <img src="{{ post.image.url }}" alt="post image">
             </div>
         </div>
         <div class="post-content">
@@ -77,6 +77,7 @@
                      alt="user picture"></p>
             <p><a style="text-decoration:none; color:black;" href="{% url 'profile' comment.author.pk %}">
                 {{ comment.author }}</a></p>
+            {% endif %}
             {% if request.user == comment.author %}
             <form method="POST" action="{% url 'comments_delete' comment.pk %}">
                 {% csrf_token %}
@@ -85,7 +86,6 @@
             </form>
             {% endif %}
 
-            {% endif %}
         </div>
         <div class="comment-text">
             {{ comment.text }}
