@@ -21,8 +21,8 @@ class IndexView(LoginRequiredMixin, View):
         else:
             users = get_user_model().objects.filter(Q(subscriptions=request.user.pk))
             users = users.annotate(posts_sort=Max('posts')).order_by('-posts_sort')
-        context = {
-            'user_obj': users,
-            'form': form
-        }
+            context = {
+                'user_obj': users,
+                'form': form
+            }
         return render(request, 'index.html', context=context)
