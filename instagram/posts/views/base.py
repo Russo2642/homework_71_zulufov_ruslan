@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, Max
 from django.shortcuts import render
 from django.views import View
 
@@ -20,8 +20,9 @@ class IndexView(LoginRequiredMixin, View):
             }
         else:
             users = get_user_model().objects.filter(Q(subscriptions=request.user.pk))
-            context = {
-                'user_obj': users,
-                'form': form
-            }
+            users = users.annotate(posts_sort=Max('posts')).order_by('-posts_sort')
+        context = {
+            'user_obj': users,
+            'form': form
+        }
         return render(request, 'index.html', context=context)
