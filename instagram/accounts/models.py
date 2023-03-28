@@ -4,7 +4,8 @@ from django.db import models
 
 class StatusChoice(models.TextChoices):
     MALE = 'MALE', 'Мужской'
-    FEMALE = 'FEMALE', 'Женский'
+    FEMALE = 'FEMALE', 'Женский',
+    OTHER = 'OTHER', 'Пол'
 
 
 class Account(AbstractUser):
@@ -33,6 +34,7 @@ class Account(AbstractUser):
     )
     gender = models.CharField(
         choices=StatusChoice.choices,
+        default=StatusChoice.OTHER,
         max_length=7,
         verbose_name='Пол'
     )
