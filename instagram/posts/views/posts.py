@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
@@ -7,6 +7,7 @@ from django.views.generic.edit import FormMixin
 from posts.forms import CommentForm
 from posts.forms import PostForm
 from posts.models import Comment
+from posts.models import Like
 from posts.models import Post
 
 
@@ -54,16 +55,15 @@ class PostDeleteView(UserPassesTestMixin, DeleteView):
 class AddLike(LoginRequiredMixin, View):
 
     def post(self, request, pk, *args, **kwargs):
-        post = Post.objects.get(pk=pk)
-        is_like = False
-        for like in post.likes.all():
-            if like == request.user:
-                is_like = True
-                break
-        if not is_like:
-            post.likes.add(request.user)
-        if is_like:
-            post.likes.remove(request.user)
+        post = get_object_or_404(Post, pk=self.kwargs.get('pk'))
+        old_like = Like.objects.filter(user=request.user, post=post)
+        if old_like:
+            like = Like.objects.get(user=request.user, post=post)
+            if request.user == like.user:
+                like.delete()
+        else:
+            new_like = Like(user=request.user, post=post)
+            new_like.save()
         return redirect(request.META.get('HTTP_REFERER'))
 
 
