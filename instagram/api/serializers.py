@@ -1,8 +1,6 @@
-from django.contrib.auth import get_user_model
+from posts.models import Like
 from posts.models import Post
 from rest_framework import serializers
-
-from accounts.models import Account
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -22,15 +20,6 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class LikeSerializer(serializers.ModelSerializer):
-    likes = serializers.PrimaryKeyRelatedField(many=True, queryset=get_user_model().objects.all())
-
     class Meta:
-        model = Post
-        fields = ('id', 'author','likes')
-
-    def update(self, instance, validated_data):
-        likes = validated_data.pop('likes')
-        for i in likes:
-            instance.likes.add(i)
-        instance.save()
-        return instance
+        model = Like
+        fields = ('id', 'user', 'post')

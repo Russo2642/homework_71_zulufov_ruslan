@@ -5,6 +5,8 @@ from posts.models import Post
 
 from api.serializers import PostSerializer, LikeSerializer
 
+from posts.models import Like
+
 
 class PostView(ModelViewSet):
     queryset = Post.objects.all()
@@ -12,6 +14,6 @@ class PostView(ModelViewSet):
 
 
 class LikeView(ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Like.objects.all()
     serializer_class = LikeSerializer
 
