@@ -1,165 +1,94 @@
 [
 {
   "model": "posts.post",
-  "pk": 33,
+  "pk": 1,
   "fields": {
-    "description": "qwe",
-    "image": "posts/volga.jpg",
-    "author": 5,
-    "created_at": "2023-03-26T17:20:33.116Z",
-    "updated_at": "2023-03-26T17:20:33.116Z",
-    "likes": [
-      5,
-      6,
-      16
-    ]
+    "description": "Работаем",
+    "image": "posts/working.jpg",
+    "author": 1,
+    "created_at": "2023-04-20T13:21:43.578Z",
+    "updated_at": "2023-04-20T13:21:43.578Z"
   }
 },
 {
   "model": "posts.post",
-  "pk": 35,
+  "pk": 2,
   "fields": {
-    "description": "My supercar!",
-    "image": "posts/0x0_rxD7zTx.jpg",
-    "author": 6,
-    "created_at": "2023-03-27T04:45:51.815Z",
-    "updated_at": "2023-03-27T04:45:51.815Z",
-    "likes": [
-      5,
-      6
-    ]
+    "description": "BMW",
+    "image": "posts/Ford-Chevrolet-BMW-i-Mercedes-Obman-00.jpg",
+    "author": 3,
+    "created_at": "2023-04-21T05:16:00.124Z",
+    "updated_at": "2023-04-21T05:16:00.124Z"
   }
 },
 {
   "model": "posts.post",
-  "pk": 36,
+  "pk": 3,
   "fields": {
-    "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'C",
-    "image": "posts/0x0_Z01cAT6.jpg",
-    "author": 6,
-    "created_at": "2023-03-27T04:56:08.149Z",
-    "updated_at": "2023-03-27T04:56:08.149Z",
-    "likes": [
-      16
-    ]
+    "description": "Wow!",
+    "image": "posts/otnyud-ne-bmw-top-10-samykh-dorogikh-mashin-mira-v-2022-godu-3-min.jpg",
+    "author": 3,
+    "created_at": "2023-04-21T05:16:15.963Z",
+    "updated_at": "2023-04-21T05:16:25.916Z"
   }
 },
 {
   "model": "posts.post",
-  "pk": 37,
+  "pk": 4,
   "fields": {
-    "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'C",
-    "image": "posts/0x0_Nqymsru.jpg",
-    "author": 6,
-    "created_at": "2023-03-27T04:56:18.243Z",
-    "updated_at": "2023-03-27T04:56:18.243Z",
-    "likes": [
-      7,
-      5
-    ]
+    "description": "Wowwow!",
+    "image": "posts/images.jpg",
+    "author": 3,
+    "created_at": "2023-04-21T05:16:39.881Z",
+    "updated_at": "2023-04-21T05:16:39.881Z"
   }
 },
 {
-  "model": "posts.post",
-  "pk": 38,
-  "fields": {
-    "description": "It's me",
-    "image": "posts/biznes_foto_molodoy_muzhchina_v_babochke.jpg",
-    "author": 7,
-    "created_at": "2023-03-27T05:17:08.106Z",
-    "updated_at": "2023-03-27T05:17:08.106Z",
-    "likes": [
-      7
-    ]
-  }
-},
-{
-  "model": "posts.post",
-  "pk": 40,
-  "fields": {
-    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five cen",
-    "image": "posts/gruzia_1_WzKRVHX.jpg",
-    "author": 16,
-    "created_at": "2023-03-27T10:11:56.213Z",
-    "updated_at": "2023-03-27T10:11:56.213Z",
-    "likes": []
-  }
-},
-{
-  "model": "posts.comment",
-  "pk": 10,
-  "fields": {
-    "author": 5,
-    "post": 37,
-    "text": "Top!",
-    "created_at": "2023-03-27T05:06:50.119Z",
-    "updated_at": "2023-03-27T05:06:50.119Z"
-  }
-},
-{
-  "model": "posts.comment",
-  "pk": 11,
-  "fields": {
-    "author": 6,
-    "post": 33,
-    "text": "Класс!",
-    "created_at": "2023-03-27T05:10:22.767Z",
-    "updated_at": "2023-03-27T05:10:22.767Z"
-  }
-},
-{
-  "model": "posts.comment",
-  "pk": 12,
-  "fields": {
-    "author": 5,
-    "post": 33,
-    "text": "согласен!",
-    "created_at": "2023-03-27T05:11:51.971Z",
-    "updated_at": "2023-03-27T05:11:51.971Z"
-  }
-},
-{
-  "model": "posts.comment",
-  "pk": 14,
-  "fields": {
-    "author": 5,
-    "post": 37,
-    "text": "fu",
-    "created_at": "2023-03-27T09:59:08.677Z",
-    "updated_at": "2023-03-27T09:59:08.677Z"
-  }
-},
-{
-  "model": "posts.comment",
+  "model": "posts.like",
   "pk": 15,
   "fields": {
-    "author": 5,
-    "post": 36,
-    "text": "like",
-    "created_at": "2023-03-27T09:59:14.673Z",
-    "updated_at": "2023-03-27T09:59:14.673Z"
+    "user": 1,
+    "post": 1
   }
 },
 {
-  "model": "posts.comment",
-  "pk": 17,
+  "model": "posts.like",
+  "pk": 23,
   "fields": {
-    "author": 16,
-    "post": 37,
-    "text": "супер!",
-    "created_at": "2023-03-27T10:09:57.882Z",
-    "updated_at": "2023-03-27T10:09:57.882Z"
+    "user": 2,
+    "post": 1
   }
 },
 {
-  "model": "posts.comment",
-  "pk": 18,
+  "model": "posts.like",
+  "pk": 27,
   "fields": {
-    "author": 16,
-    "post": 33,
-    "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem",
-    "created_at": "2023-03-27T10:13:00.530Z",
-    "updated_at": "2023-03-27T10:13:00.530Z"
+    "user": 3,
+    "post": 1
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 29,
+  "fields": {
+    "user": 3,
+    "post": 1
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 31,
+  "fields": {
+    "user": 1,
+    "post": 2
+  }
+},
+{
+  "model": "posts.like",
+  "pk": 32,
+  "fields": {
+    "user": 2,
+    "post": 2
   }
 }
 ]

@@ -50,7 +50,7 @@
                 <i style="font-size:30px;" class="fa-regular fa-comment"></i> {{ post.comments.all.count }}
             </div>
             <div class="post-stats">
-                <span>{{ request.user.likes.all.count }}</span> отметок нравится
+                <span>{{ post.likes.all.count }}</span> отметок нравится
             </div>
             <div class="post-text">
                 <span>{{ post.author }}</span> {{ post.description }}
